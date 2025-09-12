@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// 省略
+
 class Tweet extends Model
 {
-    /** @use HasFactory<\Database\Factories\TweetFactory> */
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['tweet'];
+  protected $fillable = ['tweet'];
 
-  public function user()
+  // 🔽 1対多の関係
+  public function comments()
   {
-    return $this->belongsTo(User::class);
+    return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
   }
 }
