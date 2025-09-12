@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+// 🔽 Tweetモデルを読み込む
+use App\Models\Tweet;
 
 class CommentController extends Controller
 {
@@ -18,25 +20,36 @@ class CommentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    // 🔽 引数に Tweet を入力する
+    public function create(Tweet $tweet)
     {
-        //
+        return view('tweets.comments.create', compact('tweet'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    // 🔽 引数に Tweet を追加する
+    public function store(Request $request, Tweet $tweet)
     {
-        //
-    }
+        $request->validate([
+        'comment' => 'required|string|max:255',
+    ]);
+
+        $tweet->comments()->create([
+        'comment' => $request->comment,
+        'user_id' => auth()->id(),
+    ]);
+
+  return redirect()->route('tweets.show', $tweet);
+}
 
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment)
+    public function show(Tweet $tweet, Comment $comment)
     {
-        //
+        return view('tweets.comments.show', compact('tweet', 'comment'));
     }
 
     /**

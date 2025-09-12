@@ -13,6 +13,17 @@ class Tweet extends Model
 
   protected $fillable = ['tweet'];
 
+  public function user()
+  {
+    return $this->belongsTo(User::class);
+  }
+
+  // 🔽 追加
+  public function liked()
+  {
+      return $this->belongsToMany(User::class)->withTimestamps();
+  }
+
   // 🔽 1対多の関係
   public function comments()
   {
