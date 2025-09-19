@@ -12,7 +12,10 @@ class TweetController extends Controller
      */
     public function index()
     {
-        $tweets = Tweet::with(['user', 'liked'])->latest()->get();
+        $tweets = Tweet::with(['user', 'liked'])
+            ->latest()
+            ->paginate(10);
+        
         return view('tweets.index', compact('tweets'));
     }
 
